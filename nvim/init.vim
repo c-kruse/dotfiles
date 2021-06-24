@@ -8,6 +8,8 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -30,7 +32,7 @@ set nowrap
 let mapleader = ";"
 " ------------- telescope ---------
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files({hidden=false})<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fg <cmd>Rg<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 " ------------- telescope ---------
@@ -49,7 +51,6 @@ require'nvim-treesitter.configs'.setup {
 EOF
 " ------------- tree sitter ---------
 
-" ------------- telescope ---------
 " -- dotfile
 nnoremap <leader>vrc :e ~/.config/nvim/init.vim<cr>
 " -- dotfile
