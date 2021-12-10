@@ -5,6 +5,7 @@
     oh_my_zsh_plugins:
       - git
       - fzf
+    oh_my_zsh_theme: gnzh
   roles:
     - role: gantsign.oh-my-zsh
       users:
