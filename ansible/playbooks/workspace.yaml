@@ -1,4 +1,14 @@
 ---
+- name: install zsh
+  hosts: all
+  vars:
+    oh_my_zsh_plugins:
+      - git
+      - fzf
+  roles:
+    - role: gantsign.oh-my-zsh
+      users:
+        - username: christian
 - name: install go
   hosts: all
   vars:
@@ -23,6 +33,15 @@
       apt:
         name: neovim
         update_cache: yes
+    - name: install extras
+      become: yes
+      apt:
+        pkg:
+          - ripgrep
+          - fzf
+          - jq
+          - build-essential
+        update_cache: yes
     - name: sync nvim config
       copy:
         src: ../../nvim
@@ -36,4 +55,19 @@
       shell: nvim +PlugInstall +qall --headless
     - name: install gopls
       shell: /usr/local/go/bin/go install golang.org/x/tools/gopls@latest
+    - name: setup alias for neovim
+      lineinfile:
+        path: /home/christian/.zshrc
+        line: "alias vim='nvim'"
+        regexp: "^alias vim='nvim'$"
+        owner: christian
+        insertafter: EOF
+    - name: setup go path
+      lineinfile:
+        path: /home/christian/.zshrc
+        line: "export PATH=$PATH:/usr/local/go/bin:/home/christian/go/bin"
+        regexp: "^export PATH=$PATH:/usr/local/go/bin:/home/christian/go/bin$"
+        owner: christian
+        insertafter: EOF
+
 
