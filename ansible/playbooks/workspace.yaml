@@ -17,6 +17,13 @@
   become: yes
   roles:
     - fubarhouse.golang
+- name: install docker
+  become: yes
+  hosts: all
+  roles:
+    - role: geerlingguy.docker
+      docker_users:
+        - christian
 - name: developer setup
   hosts: all
   tasks:
@@ -36,13 +43,13 @@
         update_cache: yes
     - name: install extras
       become: yes
-      apt:
-        pkg:
+      package:
+        name:
           - ripgrep
           - fzf
           - jq
           - build-essential
-        update_cache: yes
+        state: latest
     - name: sync nvim config
       copy:
         src: ../../nvim
