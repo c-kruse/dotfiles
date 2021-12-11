@@ -48,6 +48,7 @@
           - ripgrep
           - fzf
           - jq
+          - htop
           - build-essential
         state: latest
     - name: sync nvim config
