@@ -78,5 +78,19 @@
         regexp: "^export PATH=$PATH:/usr/local/go/bin:/home/christian/go/bin$"
         owner: christian
         insertafter: EOF
-
+    - name: git user name
+      git_config:
+        scope: global
+        name: user.name
+        value: c-kruse
+    - name: git email
+      git_config:
+        scope: global
+        name: user.email
+        value: ctkruse99@gmail.com
+    - name: git default branch
+      git_config:
+        scope: global
+        name: init.defaultbranch
+        value: main
 
