@@ -93,7 +93,7 @@
       lineinfile:
         path: /home/christian/.zshrc
         line: "alias vim='nvim'"
-        regexp: "^alias vim='nvim'$"
+        search_string: "alias vim='nvim'"
         owner: christian
         insertafter: EOF
       tags:
@@ -102,7 +102,7 @@
       lineinfile:
         path: /home/christian/.zshrc
         line: "export PATH=$PATH:/usr/local/go/bin:/home/christian/go/bin"
-        regexp: "^export PATH=$PATH:/usr/local/go/bin:/home/christian/go/bin$"
+        search_string: "export PATH=$PATH:/usr/local/go/bin:/home/christian/go/bin"
         owner: christian
         insertafter: EOF
       tags:

@@ -3,6 +3,7 @@ set encoding=utf-8
 
 call plug#begin('~/.config/nvim/plugged')
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-unimpaired'
 Plug 'fatih/vim-go', { 'tag': '*' }
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
