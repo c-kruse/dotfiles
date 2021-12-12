@@ -5,11 +5,13 @@
     oh_my_zsh_plugins:
       - git
       - fzf
-    oh_my_zsh_theme: gnzh
+    oh_my_zsh_theme: lukerandall
   roles:
     - role: gantsign.oh-my-zsh
       users:
         - username: christian
+  tags:
+    - shell
 - name: install go
   hosts: all
   vars:
@@ -17,6 +19,8 @@
   become: yes
   roles:
     - fubarhouse.golang
+  tags:
+    - go
 - name: install docker
   become: yes
   hosts: all
@@ -24,23 +28,34 @@
     - role: geerlingguy.docker
       docker_users:
         - christian
+  tags:
+    - docker
 - name: developer setup
   hosts: all
   tasks:
     - name: install software-properties-common
       become: yes
-      apt:
-        name: software-properties-common
-        update_cache: yes
+      package:
+        name:
+          - software-properties-common
+          - build-essential
+        state: latest
+      tags:
+        - build
+        - neovim
     - name: add PPA
       become: yes
       apt_repository:
         repo: 'ppa:neovim-ppa/unstable'
+      tags:
+        - neovim
     - name: install neovim
       become: yes
       apt:
         name: neovim
         update_cache: yes
+      tags:
+        - neovim
     - name: install extras
       become: yes
       package:
@@ -49,8 +64,9 @@
           - fzf
           - jq
           - htop
-          - build-essential
         state: latest
+      tags:
+        - shell
     - name: sync nvim config
       copy:
         src: ../../nvim
@@ -58,12 +74,21 @@
         owner: christian
         group: christian
         mode: 0644
+      tags:
+        - neovim
     - name: install vim plug
       shell: sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+      tags:
+        - neovim
     - name: update vim plugins
       shell: nvim +PlugInstall +qall --headless
+      tags:
+        - neovim
     - name: install gopls
       shell: /usr/local/go/bin/go install golang.org/x/tools/gopls@latest
+      tags:
+        - neovim
+        - go
     - name: setup alias for neovim
       lineinfile:
         path: /home/christian/.zshrc
@@ -71,6 +96,8 @@
         regexp: "^alias vim='nvim'$"
         owner: christian
         insertafter: EOF
+      tags:
+        - neovim
     - name: setup go path
       lineinfile:
         path: /home/christian/.zshrc
@@ -78,19 +105,42 @@
         regexp: "^export PATH=$PATH:/usr/local/go/bin:/home/christian/go/bin$"
         owner: christian
         insertafter: EOF
+      tags:
+        - neovim
+        - go
     - name: git user name
       git_config:
         scope: global
         name: user.name
         value: c-kruse
+      tags:
+        - git
     - name: git email
       git_config:
         scope: global
         name: user.email
         value: ctkruse99@gmail.com
+      tags:
+        - git
     - name: git default branch
       git_config:
         scope: global
         name: init.defaultbranch
         value: main
-
+      tags:
+        - git
+    - name: install tmux
+      become: yes
+      package:
+        name: tmux
+      tags:
+        - tmux
+    - name: sync tmux config
+      copy:
+        src: ../../.tmux.conf
+        dest: /home/christian/
+        owner: christian
+        group: christian
+        mode: 0644
+      tags:
+        - tmux
