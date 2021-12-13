@@ -97,7 +97,7 @@
         owner: christian
         insertafter: EOF
       tags:
-        - neovim
+        - shell
     - name: setup go path
       lineinfile:
         path: /home/christian/.zshrc
@@ -106,8 +106,7 @@
         owner: christian
         insertafter: EOF
       tags:
-        - neovim
-        - go
+        - shell
     - name: git user name
       git_config:
         scope: global
