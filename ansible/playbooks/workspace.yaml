@@ -64,6 +64,7 @@
           - fzf
           - jq
           - htop
+          - tldr
         state: latest
       tags:
         - shell
