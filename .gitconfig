@@ -1,0 +1,13 @@
+[user]
+	name = c-kruse
+	email = ctkruse99@gmail.com
+
+[init]
+	defaultBranch = main
+
+[alias]
+    co = checkout
+    br = branch
+    ci = commit
+    s = status
+    wt = worktree

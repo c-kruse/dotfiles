@@ -107,25 +107,11 @@
         insertafter: EOF
       tags:
         - shell
-    - name: git user name
-      git_config:
-        scope: global
-        name: user.name
-        value: c-kruse
-      tags:
-        - git
-    - name: git email
-      git_config:
-        scope: global
-        name: user.email
-        value: ctkruse99@gmail.com
-      tags:
-        - git
-    - name: git default branch
-      git_config:
-        scope: global
-        name: init.defaultbranch
-        value: main
+    - name: gitconfig
+      copy:
+        src: ../../.gitconfig
+        dest: /home/christian
+        mode: 0644
       tags:
         - git
     - name: install tmux
