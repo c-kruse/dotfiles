@@ -12,6 +12,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'ThePrimeagen/git-worktree.nvim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
@@ -31,11 +32,24 @@ set signcolumn=yes
 set nowrap
 
 let mapleader = ";"
+" -------------------- hilight yank
+augroup highlight_yank
+    autocmd!
+    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=200}
+augroup END
+
+" ------------- git-worktree ---------
+lua <<EOF
+require("git-worktree").setup({})
+require("telescope").load_extension("git_worktree")
+EOF
+
 " ------------- telescope ---------
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files({hidden=false})<cr>
 nnoremap <leader>fg <cmd>Rg<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>wt <cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<cr>
 " ------------- telescope ---------
 
 
@@ -164,8 +178,3 @@ vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 EOF
 " -------------------- compe ---------------------------------
 
-" -------------------- hilight yank
-augroup highlight_yank
-    autocmd!
-    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=200}
-augroup END
