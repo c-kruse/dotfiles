@@ -130,3 +130,12 @@
         mode: 0644
       tags:
         - tmux
+    - name: sync ssh config
+      copy:
+        src: ../../.ssh/rc
+        dest: /home/christian/.ssh/rc
+        owner: christian
+        group: christian
+        mode: 0644
+      tags:
+        - tmux
