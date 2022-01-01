@@ -33,27 +33,27 @@
 - name: developer setup
   hosts: all
   tasks:
-    - name: install software-properties-common
+    - name: install dev tools
       become: yes
-      package:
+      dnf:
         name:
-          - software-properties-common
-          - build-essential
-        state: latest
+          - "@Development Tools"
+          - "@Development Libraries"
+          - libstdc++-static
+          - gcc-c++
       tags:
         - build
-        - neovim
-    - name: add PPA
+    - name: enable neovim nightly copr repo
       become: yes
-      apt_repository:
-        repo: 'ppa:neovim-ppa/unstable'
-      tags:
-        - neovim
+      command:
+        cmd: dnf copr enable -y agriffis/neovim-nightly
+        creates: "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:agriffis:neovim-nightly.repo"
     - name: install neovim
       become: yes
-      apt:
-        name: neovim
-        update_cache: yes
+      dnf:
+        name:
+          - neovim
+          - python3-neovim
       tags:
         - neovim
     - name: install extras
