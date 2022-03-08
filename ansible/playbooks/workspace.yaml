@@ -15,7 +15,8 @@
 - name: install go
   hosts: all
   vars:
-    go_version: 1.17.7
+    go_version: 1.17.8
+    go_install_clean: true
   become: yes
   roles:
     - fubarhouse.golang
@@ -110,6 +111,15 @@
         path: /home/christian/.zshrc
         line: "export PATH=$PATH:/usr/local/go/bin:/home/christian/go/bin"
         search_string: "export PATH=$PATH:/usr/local/go/bin:/home/christian/go/bin"
+        owner: christian
+        insertafter: EOF
+      tags:
+        - shell
+    - name: sensu internal env
+      lineinfile:
+        path: /home/christian/.zshrc
+        line: "export SENSU_INTERNAL_ENVIRONMENT=yes"
+        search_string: "export SENSU_INTERNAL_ENVIRONMENT=yes"
         owner: christian
         insertafter: EOF
       tags:
