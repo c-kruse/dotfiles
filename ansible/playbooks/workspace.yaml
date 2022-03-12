@@ -15,7 +15,7 @@
 - name: install go
   hosts: all
   vars:
-    go_version: 1.17.5
+    go_version: 1.17.7
   become: yes
   roles:
     - fubarhouse.golang
@@ -68,6 +68,7 @@
         state: latest
       tags:
         - shell
+        - extras
     - name: sync nvim config
       copy:
         src: ../../nvim
@@ -90,6 +91,11 @@
       tags:
         - neovim
         - go
+    - name: install glow
+      shell: /usr/local/go/bin/go install github.com/charmbracelet/glow@v1.4.1
+      tags:
+        - shell
+        - extras
     - name: setup alias for neovim
       lineinfile:
         path: /home/christian/.zshrc
@@ -125,6 +131,15 @@
       copy:
         src: ../../.tmux.conf
         dest: /home/christian/
+        owner: christian
+        group: christian
+        mode: 0644
+      tags:
+        - tmux
+    - name: sync ssh config
+      copy:
+        src: ../../.ssh/rc
+        dest: /home/christian/.ssh/rc
         owner: christian
         group: christian
         mode: 0644
