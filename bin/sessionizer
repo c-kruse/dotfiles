@@ -1,0 +1,22 @@
+#/bin/bash
+
+selected=$1
+
+if  [ -z ${selected} ]; then
+    selected=$(find $HOME -maxdepth 4 -name session.tmux | xargs dirname | xargs -i find '{}' -mindepth 1 -maxdepth 1 -type d | fzf)
+fi
+
+if  [ -z ${selected} ] || [ ! -d ${selected} ]; then
+    exit 1
+fi
+
+selected_name=$(basename $selected)
+if ! tmux has-session -t $selected_name 2>/dev/null; then
+    tmux new-session -d -c $selected -s $selected_name
+fi
+
+if [ -z $TMUX ]; then
+    tmux attach-session -t $selected_name
+else
+    tmux switch -t $selected_name
+fi
