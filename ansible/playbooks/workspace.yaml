@@ -169,8 +169,8 @@
     - name: setup user scripts path
       lineinfile:
         path: /home/christian/.zshrc
-        line: "export PATH=$PATH:$HOME/bin"
-        search_string: "export PATH=$PATH:$HOME/bin"
+        line: "export PATH=$PATH:$HOME/bin:$HOME/.local/bin"
+        search_string: "export PATH=$PATH:$HOME/bin:$HOME/.local/bin"
         owner: christian
         insertafter: EOF
       tags:
