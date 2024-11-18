@@ -40,6 +40,7 @@ vim.g.mapleader = ";"
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
+	  "fatih/vim-go",
 	  "tpope/vim-sensible",
 	  "tpope/vim-unimpaired",
 	  "neovim/nvim-lspconfig",
