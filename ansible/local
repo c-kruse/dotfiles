@@ -1,4 +1,0 @@
-all:
-  hosts:
-    ubnt.dev:
-    gizmo.c-kruse.com:

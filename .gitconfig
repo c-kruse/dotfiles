@@ -1,9 +1,9 @@
 [user]
-	name = c-kruse
-	email = ctkruse99@gmail.com
+        name = Christian Kruse
+        email = christian@c-kruse.com
 
 [init]
-	defaultBranch = main
+        defaultBranch = main
 
 [alias]
     co = checkout

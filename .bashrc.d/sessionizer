@@ -1,0 +1,3 @@
+bind -x '"\C-f":"sessionizer"' 2>/dev/null
+. /usr/share/fzf/shell/key-bindings.bash
+
