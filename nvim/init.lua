@@ -52,9 +52,7 @@ require("lazy").setup({
 			  "hrsh7th/cmp-buffer",
 			  "hrsh7th/cmp-path",
 			  "hrsh7th/cmp-cmdline",
-			  {"hrsh7th/nvim-cmp", commit='f17d9b4'},
-			  "L3MON4D3/LuaSnip",
-			  "saadparwaiz1/cmp_luasnip",
+			  "hrsh7th/nvim-cmp",
 		  },
 	  },
 	  "nvim-telescope/telescope.nvim",
@@ -89,7 +87,7 @@ local cmp = require('cmp')
 cmp.setup({
 snippet = {
   expand = function(args)
-	require('luasnip').lsp_expand(args.body)
+	vim.snippet.expand(args.body)
   end,
 },
 window = {
