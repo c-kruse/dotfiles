@@ -34,6 +34,8 @@ vim.opt.wrap = false
 
 vim.opt.hlsearch = false
 
+vim.opt.maxmempattern = 5000
+
 vim.g.mapleader = ";"
 
 local plugins = {
