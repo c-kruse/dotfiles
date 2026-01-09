@@ -52,7 +52,7 @@ local plugins = {
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		config = function()
-			require("nvim-treesitter.configs").setup({
+			require("nvim-treesitter").setup({
 				sync_install = false,
 				auto_install = false,
 				highlight = {
@@ -112,12 +112,8 @@ local plugins = {
 				matching = { disallow_symbol_nonprefix_matching = false },
 			})
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			-- Set up lspconfig.
-			local lspconfig = require("lspconfig")
-			local lsp_defaults = lspconfig.util.default_config
 
-			lsp_defaults.capabilities = vim.tbl_deep_extend("force", lsp_defaults.capabilities, capabilities)
-
+			-- Set up LSP keymaps
 			vim.api.nvim_create_autocmd("LspAttach", {
 				desc = "LSP actions",
 				callback = function(event)
@@ -140,24 +136,68 @@ local plugins = {
 				end,
 			})
 
+			-- Configure LSP servers using the new vim.lsp.config API
+			vim.lsp.config.gopls = {
+				cmd = { "gopls" },
+				filetypes = { "go", "gomod", "gowork", "gotmpl" },
+				root_markers = { "go.work", "go.mod", ".git" },
+				capabilities = capabilities,
+			}
+
+			vim.lsp.config.clangd = {
+				cmd = { "clangd" },
+				filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+				root_markers = { ".clangd", ".clang-tidy", ".clang-format", "compile_commands.json", "compile_flags.txt", "configure.ac", ".git" },
+				capabilities = capabilities,
+			}
+
+			vim.lsp.config.nixd = {
+				cmd = { "nixd" },
+				filetypes = { "nix" },
+				root_markers = { "flake.nix", ".git" },
+				capabilities = capabilities,
+			}
+
+			vim.lsp.config.ts_ls = {
+				cmd = { "typescript-language-server", "--stdio" },
+				filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+				root_markers = { "tsconfig.json", "package.json", "jsconfig.json", ".git" },
+				capabilities = capabilities,
+			}
+
+			vim.lsp.config.pylsp = {
+				cmd = { "pylsp" },
+				filetypes = { "python" },
+				root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" },
+				capabilities = capabilities,
+			}
+
+			-- Enable LSP servers
+			vim.lsp.enable({ "gopls", "clangd", "nixd", "ts_ls", "pylsp" })
+
+			-- Custom command for gopls with tags
 			vim.api.nvim_create_user_command("LspGoplsTags", function(info)
-				lspconfig.gopls.setup({
+				-- Stop existing gopls client
+				for _, client in ipairs(vim.lsp.get_clients({ name = "gopls" })) do
+					vim.lsp.stop_client(client.id)
+				end
+
+				-- Update gopls config with new tags
+				vim.lsp.config.gopls = vim.tbl_deep_extend("force", vim.lsp.config.gopls or {}, {
+					cmd = { "gopls" },
 					settings = {
 						gopls = {
 							env = { GOFLAGS = string.format("-tags=%s", info.args) },
 						},
 					},
 				})
+
+				-- Restart gopls
+				vim.lsp.enable("gopls")
 			end, {
-				desc = "Restarts lspconfig.gopls with new set of tags",
+				desc = "Restarts gopls with new set of tags",
 				nargs = 1,
 			})
-
-			lspconfig.gopls.setup({})
-			lspconfig.clangd.setup({})
-			lspconfig.nixd.setup({})
-			lspconfig.ts_ls.setup({})
-			lspconfig.pylsp.setup({})
 		end,
 	},
 }
